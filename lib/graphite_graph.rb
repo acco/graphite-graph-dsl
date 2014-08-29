@@ -273,6 +273,11 @@ class GraphiteGraph
     dual_axis = false
     targets.each_value { |v| dual_axis = true if v.include?(:second_y_axis) }
 
+    properties.each do |k, v|
+      v = CGI.escape(v).gsub('+', '%20') if v.is_a?(String)
+      properties[k] = v
+    end
+
     [:title, :vtitle, :from, :width, :height, :until].each do |item|
       url_parts << "#{item}=#{properties[item]}" if properties[item]
     end
